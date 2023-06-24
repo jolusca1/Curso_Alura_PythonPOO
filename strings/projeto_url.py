@@ -1,7 +1,11 @@
-#url = "bytebank.com/cambio?moedaDestino=dolarmoedaOrigem=real"
+#url = "bytebank.com/cambio?quantidade=100&moedaOrigem=real&moedaDestino=dolars"
 
 url = ""
 
+# Sanitização
+url = url.strip()
+
+# Validação da URL  
 if url == "":
     raise ValueError("A URL está vazia")
 
