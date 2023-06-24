@@ -37,12 +37,41 @@ class ExtratorURL:
         indice_valor = indice_parametro + len(parametro_busca) + 1
         indice_e_comercial = self.get_url_parametros().find('&', indice_valor)
 
+
         if indice_e_comercial == -1:
             valor = self.get_url_parametros()[indice_valor:]
         else:
             valor = self.get_url_parametros()[indice_valor:indice_e_comercial]
             
         return valor
+                    
+    def get_conversao_moeda(self):  
+        moeda_origem = self.get_valor_parametro(parametro_busca='moedaOrigem')
+        quantidade = int(self.get_valor_parametro(parametro_busca='quantidade'))
+        
+        if moeda_origem == 'dolar':
+            valor =  quantidade * 5.5
+        elif moeda_origem == 'real':
+            valor = quantidade / 5.5
+            
+        return valor
+        
+    def __len__(self):
+        return len(self.url)
+    
+    def __str__(self):
+        return "URL: " + self.url + "\n" + "Parâmetros: " + self.get_url_parametros() + "\n" + "URL BASE: " + self.get_url_base()
+    
+    def __eq__(self, other):
+        return self.url == other.url
 
-extrator_url = ExtratorURL("htts://www.bytebank.com.br/cambio")
-extrator_url.valida_url()
+
+url = "bytebank.com/cambio?quantidade=100&moedaOrigem=real&moedaDestino=dolar"
+extrator_url = ExtratorURL(url)
+
+VALOR_DOLAR = 5.50  # 1 dólar = 5.50 reais
+moeda_origem = extrator_url.get_valor_parametro("moedaOrigem")
+moeda_destino = extrator_url.get_valor_parametro("moedaDestino")
+quantidade = extrator_url.get_valor_parametro("quantidade")
+
+print(extrator_url.get_conversao_moeda())
